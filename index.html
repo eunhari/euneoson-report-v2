@@ -157,6 +157,9 @@ textarea{resize:none;height:70px}
         <input type="text" id="location" placeholder="예) B1 A구역 소방차 전용구역 앞">
         <label>상세 내용 (선택)</label>
         <textarea id="detail" placeholder="위반 상황을 간략히 설명해 주세요"></textarea>
+        <label>결과 통지용 이메일 주소 (선택)</label>
+        <input type="text" id="contact" placeholder="예) example@gmail.com">
+        <p style="font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:10px">이메일 주소를 입력하지 않으실 경우 신고 결과 통지를 받을 수 없습니다.</p>
       </div>
       <div class="card">
         <div class="card-title">📷 증거 사진 <span style="font-size:11px;color:var(--red);font-weight:400">(필수 — 현장 직접 촬영)</span></div>
@@ -451,6 +454,7 @@ async function submitReport() {
       plate:    document.getElementById('plate').value.trim(),
       location: document.getElementById('location').value.trim(),
       detail:   document.getElementById('detail').value.trim(),
+      contact:  document.getElementById('contact').value.trim(),
       photo:    photoUploadUrl,
       volunteer: volunteerChoice,
       vname:    volunteerInfo.name,
@@ -477,7 +481,7 @@ function resetForm() {
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('vc-yes').classList.remove('sel-yes');
   document.getElementById('vc-no').classList.remove('sel-no');
-  ['plate','location','detail'].forEach(id=>document.getElementById(id).value='');
+  ['plate','location','detail','contact'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('ppreview').innerHTML='';
   document.getElementById('ppreview').style.display='none';
   document.getElementById('pzone').style.display='block';
@@ -523,6 +527,7 @@ function openModal(r) {
   curReport=r;
   document.getElementById('modal-title').textContent=emj(r['신고유형']||'')+' '+(r['신고유형']||'')+' 신고 상세';
   const photo=r['사진URL']?`<div class="detail-row"><div class="detail-label">증거 사진</div><div class="detail-val"><a href="${r['사진URL']}" target="_blank" style="color:var(--navy2)">📷 사진 보기</a></div></div>`:'';
+  const emailRow = r['결과통지이메일']?`<div class="detail-row"><div class="detail-label">통지 이메일</div><div class="detail-val">${r['결과통지이메일']}</div></div>`:`<div class="detail-row"><div class="detail-label">통지 이메일</div><div class="detail-val" style="color:var(--muted)">미입력 (통지 불가)</div></div>`;
   const vol=r['봉사신청']==='yes'?`
     <div class="detail-row"><div class="detail-label">봉사 신청</div><div class="detail-val" style="color:var(--green);font-weight:700">🙋 적립 신청</div></div>
     <div class="detail-row"><div class="detail-label">신청자명</div><div class="detail-val">${r['봉사신청자명']||'—'}</div></div>
@@ -536,6 +541,7 @@ function openModal(r) {
     <div class="detail-row"><div class="detail-label">위반 장소</div><div class="detail-val">${r['위반장소']||'—'}</div></div>
     <div class="detail-row"><div class="detail-label">상세 내용</div><div class="detail-val">${r['상세설명']||'—'}</div></div>
     ${photo}
+    ${emailRow}
     <div class="detail-row"><div class="detail-label">처리 상태</div><div class="detail-val"><span class="badge ${bc(r['처리상태'])}">${r['처리상태']||'—'}</span></div></div>
     ${vol}`;
   const acts=document.getElementById('modal-actions');
