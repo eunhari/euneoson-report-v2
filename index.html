@@ -36,7 +36,6 @@ textarea{resize:none;height:70px}
 .photo-preview{display:none;flex-wrap:wrap;gap:7px;margin-bottom:10px;align-items:center}
 .photo-preview img{width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid var(--border)}
 .photo-status{font-size:11px;margin-top:3px;width:100%}
-
 /* 봉사시간 선택 */
 .volunteer-choice{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
 .vc-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:8px;background:#fafbfd;text-align:center;cursor:pointer;transition:all .2s}
@@ -45,7 +44,6 @@ textarea{resize:none;height:70px}
 .vc-btn .ds{font-size:10px;color:var(--muted)}
 .vc-btn.sel-yes{border-color:var(--green);background:#EAF3DE}
 .vc-btn.sel-no{border-color:var(--muted);background:#F5F5F5}
-
 /* 개인정보 동의 팝업 */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
@@ -58,7 +56,6 @@ textarea{resize:none;height:70px}
 .agree-check span{font-size:13px;font-weight:500}
 .popup-fields label{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px;display:block}
 .popup-fields input{margin-bottom:10px}
-
 .submit-btn{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
 .submit-btn:hover{background:var(--navy2);transform:translateY(-1px)}
 .submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
@@ -70,7 +67,6 @@ textarea{resize:none;height:70px}
 .success h2{font-size:19px;font-weight:700;color:var(--green);margin-bottom:7px}
 .success p{font-size:13px;color:var(--muted);line-height:1.7}
 .notice-box{background:#EBF3FB;border-left:3px solid var(--navy2);border-radius:8px;padding:9px 13px;font-size:12px;color:var(--navy);line-height:1.6;margin-bottom:12px}
-
 /* 관리자 비밀번호 */
 .pw-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center}
 .pw-box{background:#fff;border-radius:16px;padding:30px 26px;width:300px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.2)}
@@ -82,7 +78,6 @@ textarea{resize:none;height:70px}
 .pw-box .pw-btn{width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
 .pw-box .pw-btn:hover{background:var(--navy2)}
 .pw-err{font-size:12px;color:var(--red);margin-top:7px;display:none}
-
 /* 관리자 */
 .admin-header{background:linear-gradient(135deg,#1F4E79,#2E75B6);border-radius:var(--r);padding:14px 18px;color:#fff;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
 .admin-header h2{font-size:14px;font-weight:700}
@@ -121,14 +116,12 @@ textarea{resize:none;height:70px}
 .tab-content.active{display:block}
 .refresh-btn{padding:4px 10px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);border-radius:6px;color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:11px;cursor:pointer}
 .empty-state{text-align:center;padding:36px 20px;color:var(--muted);font-size:13px}
-
 /* 푸터 저작권 */
 .footer{background:var(--navy);padding:10px 20px;text-align:center;margin-top:auto}
 .footer p{color:rgba(255,255,255,.45);font-size:10px;line-height:1.6}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-icon">🚗</div>
   <div class="header-text">
@@ -140,7 +133,6 @@ textarea{resize:none;height:70px}
   <div class="tab active" onclick="switchTab('report')">신고하기</div>
   <div class="tab" onclick="switchTab('admin')">관리자</div>
 </div>
-
 <!-- 신고 탭 -->
 <div class="tab-content active" id="tab-report">
   <div class="content">
@@ -176,7 +168,6 @@ textarea{resize:none;height:70px}
         </div>
         <div class="photo-preview" id="ppreview"></div>
       </div>
-
       <!-- 봉사시간 선택 -->
       <div class="card">
         <div class="card-title">🙋 봉사활동 시간 적립</div>
@@ -194,7 +185,6 @@ textarea{resize:none;height:70px}
           </div>
         </div>
       </div>
-
       <button class="submit-btn" id="submit-btn" onclick="submitReport()">📨 신고 제출하기</button>
     </div>
     <div class="loading" id="loading-area">
@@ -212,7 +202,6 @@ textarea{resize:none;height:70px}
     </div>
   </div>
 </div>
-
 <!-- 관리자 탭 -->
 <div class="tab-content" id="tab-admin">
   <div class="content">
@@ -228,7 +217,6 @@ textarea{resize:none;height:70px}
     <div id="report-list"><div class="empty-state">불러오는 중...</div></div>
   </div>
 </div>
-
 <!-- 관리자 비밀번호 -->
 <div class="pw-overlay" id="pw-overlay">
   <div class="pw-box">
@@ -240,7 +228,6 @@ textarea{resize:none;height:70px}
     <div class="pw-err" id="pw-err">비밀번호가 올바르지 않습니다.</div>
   </div>
 </div>
-
 <!-- 개인정보 동의 팝업 -->
 <div class="overlay" id="privacy-overlay">
   <div class="popup">
@@ -270,7 +257,6 @@ textarea{resize:none;height:70px}
     <button style="width:100%;padding:11px;background:none;border:1px solid var(--border);border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:13px;color:var(--muted);cursor:pointer;margin-top:8px" onclick="cancelPrivacy()">취소 (익명으로 신고)</button>
   </div>
 </div>
-
 <!-- 신고 상세 모달 -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
@@ -281,29 +267,24 @@ textarea{resize:none;height:70px}
     <div id="modal-code"></div>
   </div>
 </div>
-
 <!-- 푸터 -->
 <div class="footer">
   <p>Developed by 이진우 · 개발·디자인 및 운영 권한 귀속: 이진우 (은어송하늘채리버뷰 입주자대표회의 회장)</p>
   <p style="margin-top:2px">© 2026 은어송하늘채리버뷰 입주자대표회의 · All rights reserved.</p>
 </div>
-
 <script>
 const GAS             = 'https://script.google.com/macros/s/AKfycbzFCYXpdJoZo2xL-9JFkZuYz4d0rHt95z_4lI_IkVRcRG7sdegqKTNB1JJKqWjIXTg2oA/exec';
 const ADMIN_PW   = '1234';
 const CLD_CLOUD  = 'dcmacd0rf';
 const CLD_PRESET = 'euneoson_report';
 const CLD_URL    = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/image/upload`;
-
 let sType='', photoUrl='', volunteerChoice='', curReport=null, adminOK=false;
 let volunteerInfo = { name:'', birth:'', id1365:'' };
-
 // ── GAS GET 호출 ──
 async function gas(params) {
   const res = await fetch(GAS + '?' + Object.entries(params).map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(v||'')).join('&'));
   return res.json();
 }
-
 // ── 탭 전환 ──
 function switchTab(t) {
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -317,7 +298,6 @@ function switchTab(t) {
     } else { loadAdmin(); }
   }
 }
-
 // ── 관리자 비밀번호 ──
 function checkPw() {
   const pw = document.getElementById('pw-input').value;
@@ -332,13 +312,11 @@ function checkPw() {
     document.getElementById('pw-input').focus();
   }
 }
-
 // ── 신고 유형 ──
 function selType(el,t){
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel'); sType=t;
 }
-
 // ── 봉사시간 선택 ──
 function selVolunteer(choice) {
   document.getElementById('vc-yes').classList.remove('sel-yes');
@@ -354,7 +332,6 @@ function selVolunteer(choice) {
     volunteerInfo = { name:'', birth:'', id1365:'' };
   }
 }
-
 // ── 개인정보 동의 팝업 ──
 function toggleAgree() {
   const checked = document.getElementById('agree-check').checked;
@@ -364,12 +341,10 @@ function toggleAgree() {
   const id = document.getElementById('v-1365id').value.trim();
   btn.disabled = !(checked && name && birth && id);
 }
-
 // 입력 변경 시마다 버튼 활성화 체크
 ['v-name','v-birth','v-1365id'].forEach(id=>{
   document.getElementById(id).addEventListener('input', toggleAgree);
 });
-
 function confirmPrivacy() {
   const name  = document.getElementById('v-name').value.trim();
   const birth = document.getElementById('v-birth').value.trim();
@@ -378,7 +353,6 @@ function confirmPrivacy() {
   volunteerInfo = { name, birth, id1365: id };
   document.getElementById('privacy-overlay').classList.remove('open');
 }
-
 function cancelPrivacy() {
   document.getElementById('privacy-overlay').classList.remove('open');
   document.getElementById('vc-yes').classList.remove('sel-yes');
@@ -392,10 +366,8 @@ function cancelPrivacy() {
   document.getElementById('v-1365id').value='';
   document.getElementById('privacy-confirm-btn').disabled=true;
 }
-
 // ── 사진 처리 (소형 리사이즈 + 워터마크 + GET 직접 전송 → Drive 저장) ──
 let photoBase64 = ''; // GET 파라미터로 보낼 base64 (photoUrl 대신 사용)
-
 function handlePhoto(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -409,7 +381,6 @@ function handlePhoto(e) {
   st.textContent='🖼 사진 처리 중...';
   pv.innerHTML='';
   pv.appendChild(st);
-
   const reader = new FileReader();
   reader.onload = ev => {
     const img = new Image();
@@ -435,7 +406,6 @@ function handlePhoto(e) {
       ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
       ctx.fillText(stamp,w-tw-mg*2,h-mg*2+fs-6);
       ctx.shadowBlur=0;
-
       // 품질을 낮춰가며 base64 길이가 GET 제한 안에 들어올 때까지 압축
       let quality = 0.6;
       let dataUrl = canvas.toDataURL('image/jpeg', quality);
@@ -443,13 +413,11 @@ function handlePhoto(e) {
         quality -= 0.1;
         dataUrl = canvas.toDataURL('image/jpeg', quality);
       }
-
       // 미리보기
       const pi=document.createElement('img');
       pi.src=dataUrl;
       pi.style.cssText='width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid var(--border)';
       pv.innerHTML=''; pv.appendChild(pi); pv.appendChild(st);
-
       if (dataUrl.length > 7000) {
         st.textContent='⚠ 사진이 너무 큽니다. 다시 촬영해 주세요.';
         st.style.color='var(--red)';
@@ -464,17 +432,14 @@ function handlePhoto(e) {
   };
   reader.readAsDataURL(file);
 }
-
 // ── 신고 제출 ──
 async function submitReport() {
   if (!sType) { alert('신고 유형을 선택해 주세요.'); return; }
   if (!document.getElementById('plate').value.trim()) { alert('차량번호를 입력해 주세요.\n(해당 없으면 "-" 입력)'); return; }
   if (!volunteerChoice) { alert('봉사시간 적립 여부를 선택해 주세요.'); return; }
   if (volunteerChoice==='yes' && !volunteerInfo.name) { alert('개인정보 입력을 완료해 주세요.'); selVolunteer('yes'); return; }
-
   document.getElementById('form-area').style.display='none';
   document.getElementById('loading-area').style.display='block';
-
   try {
     const r = await gas({
       action:   'submit',
@@ -502,7 +467,6 @@ async function submitReport() {
     alert('통신 오류: '+e.message);
   }
 }
-
 // ── 폼 초기화 ──
 function resetForm() {
   sType=''; photoUrl=''; photoBase64=''; volunteerChoice=''; volunteerInfo={name:'',birth:'',id1365:''};
@@ -523,7 +487,6 @@ function resetForm() {
   document.getElementById('v-1365id').value='';
   document.getElementById('privacy-confirm-btn').disabled=true;
 }
-
 // ── 관리자 로드 ──
 async function loadAdmin() {
   document.getElementById('report-list').innerHTML='<div class="empty-state">불러오는 중...</div>';
@@ -549,10 +512,8 @@ async function loadAdmin() {
     document.getElementById('report-list').innerHTML=`<div class="empty-state" style="color:var(--red)">⚠ 오류: ${e.message}</div>`;
   }
 }
-
 function emj(t){return t==='불법주정차'?'🚫':t==='블랙리스트의심'?'🔍':t==='알박기차량'?'⛔':t==='쓰레기투기'?'🗑️':t==='흡연'?'🚬':'⚠️';}
 function bc(s){return s==='접수대기'?'bp':s==='확인중'?'bv':s==='처리완료'?'bd':'br';}
-
 // ── 모달 ──
 function openModal(r) {
   curReport=r;
@@ -586,9 +547,7 @@ function openModal(r) {
   }
   document.getElementById('modal').classList.add('open');
 }
-
 function closeModal(){document.getElementById('modal').classList.remove('open');loadAdmin();}
-
 async function doProcess(action) {
   document.querySelectorAll('.action-btn').forEach(b=>b.disabled=true);
   try {
