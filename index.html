@@ -366,12 +366,12 @@ function cancelPrivacy() {
   document.getElementById('v-1365id').value='';
   document.getElementById('privacy-confirm-btn').disabled=true;
 }
-// ── 사진 처리 (소형 리사이즈 + 워터마크 + GET 직접 전송 → Drive 저장) ──
-let photoBase64 = ''; // GET 파라미터로 보낼 base64 (photoUrl 대신 사용)
+// ── 사진 처리 (리사이즈 + 워터마크 + Cloudinary 업로드) ──
+let photoUploadUrl = ''; // Cloudinary에서 받은 URL (photo 파라미터로 GAS에 전달)
 function handlePhoto(e) {
   const file = e.target.files[0];
   if (!file) return;
-  photoUrl=''; photoBase64='';
+  photoUploadUrl='';
   const pv = document.getElementById('ppreview');
   pv.style.display='flex';
   document.getElementById('pzone').style.display='none';
@@ -385,8 +385,8 @@ function handlePhoto(e) {
   reader.onload = ev => {
     const img = new Image();
     img.onload = () => {
-      // GET URL 길이 제한(약 8000자)에 맞추기 위해 작게 리사이즈 + 저품질
-      const MAX=480;
+      // 화질 유지를 위해 1200px까지 허용 (Cloudinary는 용량 제한 없음)
+      const MAX=1200;
       let w=img.width, h=img.height;
       if (w>MAX||h>MAX) { if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;} }
       const canvas=document.createElement('canvas');
@@ -396,7 +396,7 @@ function handlePhoto(e) {
       // 워터마크
       const now=new Date();
       const stamp=now.getFullYear()+'.'+String(now.getMonth()+1).padStart(2,'0')+'.'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
-      const fs=Math.max(12,Math.round(w*0.035));
+      const fs=Math.max(16,Math.round(w*0.03));
       const mg=Math.round(fs*0.8);
       ctx.font=`bold ${fs}px monospace`;
       const tw=ctx.measureText(stamp).width;
@@ -406,27 +406,31 @@ function handlePhoto(e) {
       ctx.shadowColor='rgba(0,0,0,0.8)'; ctx.shadowBlur=4;
       ctx.fillText(stamp,w-tw-mg*2,h-mg*2+fs-6);
       ctx.shadowBlur=0;
-      // 품질을 낮춰가며 base64 길이가 GET 제한 안에 들어올 때까지 압축
-      let quality = 0.6;
-      let dataUrl = canvas.toDataURL('image/jpeg', quality);
-      while (dataUrl.length > 6000 && quality > 0.15) {
-        quality -= 0.1;
-        dataUrl = canvas.toDataURL('image/jpeg', quality);
-      }
       // 미리보기
       const pi=document.createElement('img');
-      pi.src=dataUrl;
+      pi.src=canvas.toDataURL('image/jpeg',0.85);
       pi.style.cssText='width:68px;height:68px;object-fit:cover;border-radius:8px;border:1px solid var(--border)';
       pv.innerHTML=''; pv.appendChild(pi); pv.appendChild(st);
-      if (dataUrl.length > 7000) {
-        st.textContent='⚠ 사진이 너무 큽니다. 다시 촬영해 주세요.';
-        st.style.color='var(--red)';
-        photoBase64='';
-      } else {
-        photoBase64 = dataUrl;
-        st.textContent='✅ 사진 준비 완료 ('+stamp+')';
-        st.style.color='var(--green)';
-      }
+      st.textContent='📤 업로드 중...';
+      // Cloudinary 업로드 (POST는 CORS 허용됨)
+      canvas.toBlob(blob=>{
+        const fd=new FormData();
+        fd.append('file',blob,'report.jpg');
+        fd.append('upload_preset',CLD_PRESET);
+        fetch(CLD_URL,{method:'POST',body:fd})
+          .then(r=>r.json())
+          .then(data=>{
+            if(data.secure_url){
+              photoUploadUrl=data.secure_url;
+              st.textContent='✅ 업로드 완료 ('+stamp+')';
+              st.style.color='var(--green)';
+            } else {
+              st.textContent='⚠ 업로드 실패: '+(data.error?.message||'오류');
+              st.style.color='var(--red)';
+            }
+          })
+          .catch(err=>{ st.textContent='⚠ 오류: '+err.message; st.style.color='var(--red)'; });
+      },'image/jpeg',0.85);
     };
     img.src=ev.target.result;
   };
@@ -447,7 +451,7 @@ async function submitReport() {
       plate:    document.getElementById('plate').value.trim(),
       location: document.getElementById('location').value.trim(),
       detail:   document.getElementById('detail').value.trim(),
-      photo:    photoBase64,
+      photo:    photoUploadUrl,
       volunteer: volunteerChoice,
       vname:    volunteerInfo.name,
       vbirth:   volunteerInfo.birth,
@@ -469,7 +473,7 @@ async function submitReport() {
 }
 // ── 폼 초기화 ──
 function resetForm() {
-  sType=''; photoUrl=''; photoBase64=''; volunteerChoice=''; volunteerInfo={name:'',birth:'',id1365:''};
+  sType=''; photoUrl=''; photoUploadUrl=''; volunteerChoice=''; volunteerInfo={name:'',birth:'',id1365:''};
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('sel'));
   document.getElementById('vc-yes').classList.remove('sel-yes');
   document.getElementById('vc-no').classList.remove('sel-no');
